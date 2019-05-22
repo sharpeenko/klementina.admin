@@ -21,12 +21,18 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['login', 'error', 'logout'],
                         'allow' => true,
-                        'roles' => ['@'],
+                    ],
+                    /**
+                     *  Доступ только для админа
+                     */
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['admin'],
                     ],
                 ],
             ],

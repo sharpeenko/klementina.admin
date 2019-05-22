@@ -123,5 +123,19 @@ class User extends ActiveRecord implements IdentityInterface {
     public function generateAuthKey() {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
+    
+    /**
+     * Автоматическое добавление роли зарегистрированному пользователю
+     * @param type $insert
+     * @param type $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Назначаем роль в методе afterSave модели User
+        $auth = Yii::$app->authManager;
+        $user = $auth->getRole('user'); // Получаем роль editor
+        $auth->assign($user, $this->id); // Назначаем пользователю, которому принадлежит модель User
+    }
 
 }
